@@ -226,7 +226,7 @@
     </div>
     
     <audio id="typing-sound" src="typing-sound.mp3" loop></audio>
-    
+
     <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
 
     <script>
@@ -322,8 +322,8 @@
                     const highlightedResult = hljs.highlightAuto(noteToRun);
                     const highlightedHTML = highlightedResult.value;
                     
-                    // Start the typing sound
-                    typingAudio.play().catch(e => console.error("Audio play failed:", e));
+                    // Start the typing sound. The .catch() is important to see errors in the console.
+                    typingAudio.play().catch(e => console.error("Audio play failed. Ensure the file 'typing-sound.mp3' is in the same folder as the HTML file.", e));
 
                     typeItInstance = new TypeIt('#output-editor', {
                         strings: [highlightedHTML],
