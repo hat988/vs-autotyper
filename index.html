@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePad_ // Syntax_Runner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+
+</head>
+<body>
+
+    <div class="ide-container">
+        <div class="activity-bar">
+            <i class="fa-solid fa-file-alt active" title="Files"></i>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>KS-Autotyper</h2>
+            </div>
+            <ul class="file-list" id="file-list-ul"></ul>
+        
+        </div>
+
+        <div class="main-panel">
+            <div class="editor-header">
+                <div class="editor-header-left">
+                  <span id="current-file-tab"><i class="fa-solid fa-file-lines"></i> my_note.js</span>
+                </div>
+                <div class="editor-controls">
+                    <button id="save-btn"><i class="fa-solid fa-save"></i> Save</button>
+                    <button id="load-btn"><i class="fa-solid fa-folder-open"></i> Load</button>
+                    <button id="clear-btn"><i class="fa-solid fa-trash"></i> Clear Editor</button>
+                    <button id="run-btn"><i class="fa-solid fa-play"></i> Run</button>
+                    <button id="add-file-btn-header" title="New Temporary File"><i class="fa-solid fa-plus"></i> New</button>
+                </div>
+            </div>
+            <div class="editor-area">
+                <textarea id="note-input" placeholder="Enter your script here..."></textarea>
+                <div id="output-editor" class="hljs"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <span id="status-message">Ready</span>
+        <span>UTF-8</span>
+        <span><i class="fa-solid fa-check"></i> CodePad</span>
+    </div>
+
+    <div id="toast-container"></div>
+    
+    <audio id="typing-sound" src="typing-sound.mp3" loop></audio>
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
+</body>
+</html>
