@@ -24,7 +24,6 @@
             --status-text: #ffffff;
             --button-bg: #0e639c;
             --button-hover: #007acc;
-
             /* Eye-Catching Syntax & Glow */
             --glow-strength: 3px;
             --keyword-color: #569cd6; /* Blue */
@@ -133,59 +132,48 @@
         #output-editor .hljs-keyword,
         #output-editor .hljs-selector-tag,
         #output-editor .hljs-built_in {
-            color: var(--keyword-color);
-            text-shadow: 0 0 var(--glow-strength) var(--keyword-glow);
+            color: var(--keyword-color); text-shadow: 0 0 var(--glow-strength) var(--keyword-glow);
         }
         #output-editor .hljs-string,
         #output-editor .hljs-regexp,
         #output-editor .hljs-meta .hljs-string {
-            color: var(--string-color);
-            text-shadow: 0 0 var(--glow-strength) var(--string-glow);
+            color: var(--string-color); text-shadow: 0 0 var(--glow-strength) var(--string-glow);
         }
         #output-editor .hljs-function .hljs-title,
         #output-editor .hljs-class .hljs-title {
-            color: var(--function-color);
-            text-shadow: 0 0 var(--glow-strength) var(--function-glow);
+            color: var(--function-color); text-shadow: 0 0 var(--glow-strength) var(--function-glow);
         }
         #output-editor .hljs-number {
-            color: var(--number-color);
-            text-shadow: 0 0 var(--glow-strength) var(--number-glow);
+            color: var(--number-color); text-shadow: 0 0 var(--glow-strength) var(--number-glow);
         }
         #output-editor .hljs-comment {
-            color: var(--comment-color);
-            text-shadow: 0 0 var(--glow-strength) var(--comment-glow);
+            color: var(--comment-color); text-shadow: 0 0 var(--glow-strength) var(--comment-glow);
             font-style: italic;
         }
         #output-editor .hljs-tag,
         #output-editor .hljs-name {
-            color: var(--tag-color);
-            text-shadow: 0 0 var(--glow-strength) var(--tag-glow);
+            color: var(--tag-color); text-shadow: 0 0 var(--glow-strength) var(--tag-glow);
         }
         #output-editor .hljs-attr {
-            color: var(--attr-color);
-            text-shadow: 0 0 var(--glow-strength) var(--attr-glow);
+            color: var(--attr-color); text-shadow: 0 0 var(--glow-strength) var(--attr-glow);
         }
         #output-editor .hljs-variable,
         #output-editor .hljs-template-variable,
         #output-editor .hljs-property {
-            color: var(--variable-color);
-            text-shadow: 0 0 var(--glow-strength) var(--variable-glow);
+            color: var(--variable-color); text-shadow: 0 0 var(--glow-strength) var(--variable-glow);
         }
          #output-editor .hljs-doctag {
-            color: #608b4e;
-            text-shadow: 0 0 2px #608b4e;
+            color: #608b4e; text-shadow: 0 0 2px #608b4e;
         }
         /* Default Glow for non-highlighted */
         #output-editor span:not([class^="hljs-"]) {
-             color: var(--text-color);
-             text-shadow: 0 0 1px var(--default-glow);
+             color: var(--text-color); text-shadow: 0 0 1px var(--default-glow);
         }
 
 
         /* TypeIt Cursor */
         .ti-cursor {
-            color: var(--primary-blue);
-            animation: blink 0.8s infinite;
+            color: var(--primary-blue); animation: blink 0.8s infinite;
             font-weight: bold;
             font-size: 1.1em;
             text-shadow: 0 0 3px var(--primary-blue);
@@ -211,7 +199,7 @@
         <div class="sidebar">
             <h2>Explorer</h2>
             <ul class="file-list">
-                <li><i class="fa-solid fa-folder-open"></i> SCRIPTS <ul style="padding-left: 20px; list-style: none;"> <li><i class="fa-solid fa-file-lines"></i> my_note.js</li> </ul> </li>
+               <li><i class="fa-solid fa-folder-open"></i> SCRIPTS <ul style="padding-left: 20px; list-style: none;"> <li><i class="fa-solid fa-file-lines"></i> my_note.js</li> </ul> </li>
             </ul>
         </div>
 
@@ -236,7 +224,9 @@
         <span>UTF-8</span>
         <span><i class="fa-solid fa-check"></i> CodePad</span>
     </div>
-
+    
+    <audio id="typing-sound" src="typing-sound.mp3" loop></audio>
+    
     <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
 
     <script>
@@ -248,6 +238,7 @@
             const runBtn = document.getElementById('run-btn');
             const clearBtn = document.getElementById('clear-btn');
             const statusMessage = document.getElementById('status-message');
+            const typingAudio = document.getElementById('typing-sound'); // Get the audio element
 
             let typeItInstance = null;
             const storageKey = 'vsCodePadNote';
@@ -259,11 +250,17 @@
                 }
             };
 
+            const stopTypingSound = () => {
+                typingAudio.pause();
+                typingAudio.currentTime = 0;
+            };
+
             const showEditor = () => {
                 if (typeItInstance) {
                     try { typeItInstance.destroy(); } catch (e) { console.warn("Could not destroy TypeIt instance:", e); }
                     typeItInstance = null;
                 }
+                stopTypingSound(); // Stop sound when returning to editor
                 outputEditor.style.display = 'none';
                 outputEditor.innerHTML = '';
                 noteInput.style.display = 'block';
@@ -285,9 +282,8 @@
                     console.error("Save Error:", e);
                 }
             };
-
             const loadNote = () => {
-                showEditor(); // Ensure editor is shown
+                showEditor(); // Ensure editor is shown and sound is stopped
                 try {
                     const savedNote = localStorage.getItem(storageKey);
                     if (savedNote !== null) {
@@ -301,7 +297,6 @@
                     console.error("Load Error:", e);
                 }
             };
-
             const clearNote = () => {
                 showEditor();
                 noteInput.value = '';
@@ -313,10 +308,8 @@
                      console.error("Clear Error:", e);
                 }
             };
-
             const runTyping = () => {
                 const noteToRun = localStorage.getItem(storageKey);
-
                 if (typeItInstance) {
                     updateStatus("Execution already in progress or finished.");
                     return; // Prevent multiple runs
@@ -326,35 +319,34 @@
                     showOutput();
                     updateStatus('Executing script...', true);
 
-                    // Highlight the code
                     const highlightedResult = hljs.highlightAuto(noteToRun);
                     const highlightedHTML = highlightedResult.value;
+                    
+                    // Start the typing sound
+                    typingAudio.play().catch(e => console.error("Audio play failed:", e));
 
                     typeItInstance = new TypeIt('#output-editor', {
                         strings: [highlightedHTML],
-                        speed: 30, // Adjust speed as needed
+                        speed: 30,
                         waitUntilVisible: true,
-                        lifeLike: false, // Set to false for more consistent speed with HTML
-                        html: true, // IMPORTANT: Tell TypeIt to interpret strings as HTML
+                        lifeLike: false,
+                        html: true,
                         cursor: true,
                         cursorChar: '█',
                         afterComplete: (instance) => {
-                            // Don't destroy immediately, let user see it.
-                            // instance.destroy();
-                            // typeItInstance = null;
+                            stopTypingSound(); // Stop sound on completion
                             updateStatus('Execution complete. Click Load/Clear to edit.');
                         },
                         onError: (err) => {
                              console.error("TypeIt Error:", err);
                              updateStatus('Typing error occurred.');
-                             showEditor(); // Go back to editor on error
+                             showEditor(); // Go back to editor on error, which will also stop sound
                         }
                     }).go();
                 } else {
                     updateStatus('No script found to execute. Save first.');
                 }
             };
-
             // Event Listeners
             saveBtn.addEventListener('click', saveNote);
             loadBtn.addEventListener('click', loadNote);
@@ -363,8 +355,6 @@
 
             // Initial Load
             loadNote();
-            // Initialize highlight.js (though auto-highlight is used, this doesn't hurt)
-            // hljs.highlightAll(); // Not needed for manual highlight
         });
     </script>
 
